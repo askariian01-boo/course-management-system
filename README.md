@@ -1,13 +1,10 @@
 # Course Management System
 
 ## Dashboard
-![Dashboard](images/dashboard.png)
+![Dashboard](public/images/dashboard.PNG)
 
 ## login
-![Dashboard](images/login.png)
-
-## courses
-![Dashboard](images/courses.png)
+![Login page](public/images/login.PNG)
 
 ## 🚀 About Project
 This is a Laravel-based Course Management System for managing students, teachers, classes, and schedules.
