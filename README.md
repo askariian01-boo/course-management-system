@@ -1,5 +1,14 @@
 # Course Management System
 
+## Dashboard
+![Dashboard](images/dashboard.png)
+
+## login
+![Dashboard](images/login.png)
+
+## courses
+![Dashboard](images/courses.png)
+
 ## 🚀 About Project
 This is a Laravel-based Course Management System for managing students, teachers, classes, and schedules.
 
@@ -24,5 +33,5 @@ php artisan migrate --seed
 php artisan serve  
 
 ## 👨‍💻 Author
-name : Hadi Askari
-email : askari.ian.01@gmail.com
+Hadi Askari
+askari.ian.01@gmail.com
