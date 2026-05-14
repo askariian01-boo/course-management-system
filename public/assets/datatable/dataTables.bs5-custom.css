@@ -1,0 +1,29 @@
+table.dataTable {
+  color: #c9cde1;
+  margin-bottom: 15px !important;
+  border: 1px solid #525b8f;
+}
+table.dataTable td.highlight {
+  background: #b0bab6;
+  color: #0f1117;
+}
+.page-link {
+  color: #c9cde1;
+  border-color: #525b8f;
+}
+.page-link:hover {
+  background-color: #242f6f;
+  color: #ffffff;
+  border-color: #525b8f;
+}
+.page-link.active,
+.active > .page-link {
+  background-color: #f33a6b;
+  border: 1px solid #f33a6b;
+  color: #ffffff;
+}
+.page-link.disabled,
+.disabled > .page-link {
+  border-color: #525b8f;
+  background-color: #323a7b;
+}
