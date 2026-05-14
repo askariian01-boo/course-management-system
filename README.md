@@ -24,5 +24,5 @@ php artisan migrate --seed
 php artisan serve  
 
 ## 👨‍💻 Author
-Hadi Askari
-askari.ian.01@gmail.com
+name : Hadi Askari
+email : askari.ian.01@gmail.com
