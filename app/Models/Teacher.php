@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Subject;
 
 class Teacher extends Model
 {
-      protected $fillable = [
+    protected $fillable = [
         'user_id',
         'FirstName',
         'LastName',
@@ -29,25 +30,41 @@ class Teacher extends Model
 
     protected $table = 'teachers';
 
-    public function User(){
+    public function User()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function Salaries(){
+    public function Salaries()
+    {
         return $this->hasMany(TeacherSalary::class);
     }
 
-    public function Documents(){
+    public function Documents()
+    {
         return $this->hasMany(TeacherDocument::class);
     }
 
 
-    public function Attendances(){
+    public function Attendances()
+    {
         return $this->hasMany(TeacherAttendance::class);
     }
 
 
-    public function Timetable(){
+    public function subjects()
+    {
+        return $this->belongsToMany(
+            Subject::class,
+            'teacher_subject',
+            'teacher_id',
+            'subject_id'
+        );
+    }
+
+
+    public function Timetable()
+    {
         return $this->hasMany(Timetable::class);
     }
 }

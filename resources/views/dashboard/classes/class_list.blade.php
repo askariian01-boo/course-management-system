@@ -13,32 +13,21 @@
                     <thead class="text-center thead-light">
                         <tr>
                             <th>
-                                <h6 style="font-weight: bold;">id</h6>
+                                <h6 style="font-weight: bold;" class="text-center">id</h6>
                             </th>
                             <th>
-                                <h6 style="font-weight: bold;">class name</h6>
+                                <h6 style="font-weight: bold;" class="text-center">class name</h6>
                             </th>
                             <th>
-                                <h6 style="font-weight: bold;">class fees</h6>
+                                <h6 style="font-weight: bold;" class="text-center">class fees</h6>
                             </th>
-                            @if (Auth::user()->can('student_class_list'))
-                                <th>
-                                    <h6 style="font-weight: bold;">students</h6>
-                                </th>
-                            @endif
-                            @if (Auth::user()->can('subject_class_list'))
-                                <th>
-                                    <h6 style="font-weight: bold;">subjects</h6>
-                                </th>
-                            @endif
-                            @if (Auth::user()->can('class_edit'))
-                                <th>
-                                    <h6 style="font-weight: bold;">edit</h6>
-                                </th>
-                            @endif
-                            @if (Auth::user()->can('class_delete'))
-                                <th>
-                                    <h6 style="font-weight: bold;">delete</h6>
+                            <th>
+                                <h6 style="font-weight: bold;" class="text-center">capacity</h6>
+                            </th>
+
+                            @if (Auth::user()->can('class_list'))
+                                <th class="text-center">
+                                    <h6 style="font-weight: bold;">Detail</h6>
                                 </th>
                             @endif
                         </tr>
@@ -57,7 +46,42 @@
                                 <td class="min-width">
                                     <p>{{ $class->ClassFees }} AFG</p>
                                 </td>
-                                @if (Auth::user()->can('student_class_list'))
+                                <td class="min-width text-center" >
+                                    <p>{{ $class->capacity }} students</p>
+                                </td>
+                                @if (Auth::user()->can('class_list'))
+                                    <td class="min-width text-center">
+                                        <p class="text-white text-center">
+                                            <a href="{{ route('class_detail', $class->id) }} " style="mragin-top:-20px;"
+                                                class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>
+                                        </p>
+                                    </td>
+                                @endif
+                                
+                            </tr>
+                        @endforeach
+                        <!-- end table row -->
+                    </tbody>
+                </table>
+                <!-- end table -->
+            </div>
+        </div>
+        <!-- end card -->
+    </div>
+@endsection
+
+{{-- @if (Auth::user()->can('student_class_list'))
+                                <th>
+                                    <h6 style="font-weight: bold;">students</h6>
+                                </th>
+                            @endif
+                            @if (Auth::user()->can('subject_class_list'))
+                                <th>
+                                    <h6 style="font-weight: bold;">subjects</h6>
+                                </th>
+                            @endif --}}
+
+                            {{-- @if (Auth::user()->can('student_class_list'))
                                     <td class="min-width">
                                         <p class="text-white">
                                             <a class="btn btn-sm btn-primary" style="mragin-top:-20px;"
@@ -78,16 +102,16 @@
                                             </a>
                                         </p>
                                     </td>
-                                @endif
-                                @if (Auth::user()->can('class_edit'))
-                                    <td class="min-width">
-                                        <p class="text-white">
-                                            <a href="{{ route('class_edit', $class->id) }} " style="mragin-top:-20px;"
-                                                class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                                        </p>
-                                    </td>
-                                @endif
-                                @if (Auth::user()->can('class_delete'))
+                                @endif --}}
+
+
+                                {{-- @if (Auth::user()->can('class_delete'))
+                                <th>
+                                    <h6 style="font-weight: bold;">delete</h6>
+                                </th>
+                            @endif --}}
+
+                                {{-- @if (Auth::user()->can('class_delete'))
                                     <td class="min-width">
                                         <p class="text-white">
                                         <form action="{{ route('class_delete', $class->id) }}" style="mragin-top:-20px;"
@@ -99,15 +123,4 @@
                                         </form>
                                         </p>
                                     </td>
-                                @endif
-                            </tr>
-                        @endforeach
-                        <!-- end table row -->
-                    </tbody>
-                </table>
-                <!-- end table -->
-            </div>
-        </div>
-        <!-- end card -->
-    </div>
-@endsection
+                                @endif --}}

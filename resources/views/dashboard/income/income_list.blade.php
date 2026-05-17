@@ -17,7 +17,7 @@
                 </select>
             </div>
 
-            <!-- ماه -->
+            <!-- ماه  -->
             @php
                 $months = [
                     1 => 'January',

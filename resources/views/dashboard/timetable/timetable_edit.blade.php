@@ -51,6 +51,30 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" style="font-weight:600;">start time</label>
+                            <div class="col-sm-9">
+                                <input type="time" class="form-control"
+                                    value="{{ date('H:i', strtotime($timetables->start_time)) }}" name="start_time">
+                                @error('start_time')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" style="font-weight:600;">end time</label>
+                            <div class="col-sm-9">
+                                <input type="time" class="form-control"
+                                    value="{{ date('H:i', strtotime($timetables->end_time)) }}" name="end_time">
+                                @error('end_time')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
                             <label class="col-sm-3 col-form-label" style="font-weight:600;">class</label>
                             <div class="col-sm-9">
                                 <select name="class_id" class="form-control form-select" id="class_select">
@@ -92,8 +116,7 @@
                                     @foreach ($teachers as $teacher)
                                         <option value="{{ $teacher->id }}"
                                             {{ $timetables->teacher_id == $teacher->id ? 'selected' : '' }}>
-                                            {{ $teacher->FirstName }} - {{ $teacher->LastName }}
-                                        </option>
+                                            {{ $teacher->FirstName }} - {{ $teacher->LastName }}  --- ( {{ $teacher->EducationDegree }} ) --- </option>
                                     @endforeach
                                 </select>
                                 @error('subject_id')
@@ -104,7 +127,8 @@
                     </div>
                 </div>
                 <input type="submit" class="btn btn-info btn-sm" value="Save">
-                <a href="{{ route('timetable_list') }}" class="btn btn btn-sm btn-primary"><i class="fa fa-arrow-left"></i>back</a>
+                <a href="{{ route('timetable_list') }}" class="btn btn btn-sm btn-primary"><i
+                        class="fa fa-arrow-left"></i>back</a>
             </form>
         </div>
     @endsection
@@ -113,55 +137,89 @@
         <script>
             $(document).ready(function() {
 
-                let selectedSubject = "{{ $timetables->subject_id }}";
+                // =========================
+                // 1. Load Subjects by Class
+                // =========================
+                $('#class_select').on('change', function() {
 
-                function loadSubjects(class_id) {
+                    let class_id = $(this).val();
+
+                    $('#subject_select').html('<option value="">Loading...</option>');
+                    $('#teacher_select').html('<option value="">choose teacher</option>');
 
                     if (class_id) {
+
                         $.ajax({
-                            url: '/get-subjects/' + class_id,
-                            type: 'GET',
-                            dataType: 'json',
+                            url: "{{ url('/get-subjects') }}/" + class_id,
+                            type: "GET",
+                            dataType: "json",
 
                             success: function(data) {
 
-                                $('#subject_select').empty();
-                                $('#subject_select').append('<option value="">choose subject</option>');
+                                $('#subject_select').html(
+                                    '<option value="">choose subject</option>');
 
                                 $.each(data, function(key, value) {
-
-                                    let selected = (value.id == selectedSubject) ? "selected" : "";
-
                                     $('#subject_select').append(
-                                        '<option value="' + value.id + '" ' + selected + '>' +
-                                        value.SubjectName +
-                                        '</option>'
+                                        '<option value="' + value.id + '">' + value
+                                        .SubjectName + '</option>'
                                     );
                                 });
+
                             },
 
                             error: function(xhr) {
                                 console.log(xhr.responseText);
-                                alert('error in loading subjects');
+                                alert('Error loading subjects');
                             }
                         });
 
                     } else {
-                        $('#subject_select').empty();
-                        $('#subject_select').append('<option value="">choose subject</option>');
+                        $('#subject_select').html('<option value="">choose subject</option>');
                     }
-                }
+                });
 
-                // وقتی صفحه edit لود می‌شود
-                let class_id = $('#class_select').val();
-                if (class_id) {
-                    loadSubjects(class_id);
-                }
 
-                // وقتی class تغییر کند
-                $('#class_select').on('change', function() {
-                    selectedSubject = ""; // reset selected وقتی class تغییر کند
-                    loadSubjects($(this).val());
+                // =========================
+                // 2. Load Teachers by Subject
+                // =========================
+                $('#subject_select').on('change', function() {
+
+                    let subject_id = $(this).val();
+
+                    $('#teacher_select').html('<option value="">Loading...</option>');
+
+                    if (subject_id) {
+
+                        $.ajax({
+                            url: "{{ url('/get-teachers') }}/" + subject_id,
+                            type: "GET",
+                            dataType: "json",
+
+                            success: function(data) {
+
+                                $('#teacher_select').html(
+                                    '<option value="">choose teacher</option>');
+
+                                $.each(data, function(key, value) {
+                                    $('#teacher_select').append(
+                                        '<option value="' + value.id + '">' +
+                                        value.FirstName + ' ' + value.LastName +
+                                        '</option>'
+                                    );
+                                });
+
+                            },
+
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                                alert('Error loading teachers');
+                            }
+                        });
+
+                    } else {
+                        $('#teacher_select').html('<option value="">choose teacher</option>');
+                    }
                 });
 
             });

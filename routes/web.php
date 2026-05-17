@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ContanctControllr;
 use App\Http\Controllers\dashboard\StudentFeesController as DasboardStudentFeesController;
 use App\Http\Controllers\dashboard\StudentFeesController;
 use App\Http\Controllers\dashboard\AssignSubjectToClass;
@@ -29,6 +30,10 @@ use App\Http\Controllers\dashboard\TeacherSalaryController;
 use App\Http\Controllers\dashboard\TeacherUserController;
 use App\Http\Controllers\dashboard\TimetableController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\website\AbouteController;
+use App\Http\Controllers\website\ContactController;
+use App\Http\Controllers\website\TestimonalController;
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
 // ----------------------> Loign Route And Controllers And Setting <-------------------------- // 
@@ -38,6 +43,49 @@ Route::prefix('CMS')->group(function () {
         Route::post('/login', [AuthenticatedSessionController::class, 'store']);
     });
 });
+
+
+// ----------------------> Website Route And Controllers And Setting <-------------------------- // 
+
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('website');
+
+Route::get('/' , [WebsiteController::class , 'index'])->name('website');
+Route::get('/website/about_us_page', [WebsiteController::class, 'aboutPage'])->name('about_page');
+Route::get('/website/courses_page' , [WebsiteController::class , 'Courses'])->name('courses_page');
+Route::get('/website/testimonials_pages' , [WebsiteController::class , 'TestimonialPage'])->name('tistimonials_page');
+Route::get('/website/contact_us_page' , [WebsiteController::class , 'ContactPage'])->name('contact_page');
+
+
+// ----------------------> Website Route And Controllers And Setting Where backend setting <-------------------------- // 
+Route::middleware('auth')->group(function () {
+    // abouts routes & controllers & setting
+
+    Route::get('/abouts', [AbouteController::class, 'Abouts'])->name('abouts');
+    Route::get('/about_add', [AbouteController::class, 'AboutAdd'])->name('about_add');
+    Route::post('/about_save', [AbouteController::class, 'AboutSave'])->name('about_save');
+    Route::get('/about_edit/{id}', [AbouteController::class, 'AboutEdit'])->name('about_edit');
+    Route::put('/about_update/{id}', [AbouteController::class, 'AboutUpdate'])->name('about_update');
+    Route::delete('/about_delete/{id}', [AbouteController::class, 'AboutDelete'])->name('about_delete');
+
+
+    // testimonials routes & controllers & setting
+    Route::get('/testimonials', [TestimonalController::class, 'Testimonial_list'])->name('testimonials');
+    Route::get('/testimonial_add', [TestimonalController::class, 'TestimonialAdd'])->name('testimonial_add');
+    Route::post('/testimonial_save', [TestimonalController::class, 'TestimonialSave'])->name('testimonial_save');
+    Route::get('/testimonial_edit/{id}', [TestimonalController::class, 'TestimonialEdit'])->name('testimonial_edit');
+    Route::put('/testimonial_update/{id}', [TestimonalController::class, 'TestimonialUpdate'])->name('testimonial_update');
+    Route::delete('/testimonial_delete/{id}', [TestimonalController::class, 'TestimonialDelete'])->name('testimonial_delete');
+
+
+    // contact_us routes & controllers & setting
+    Route::get('/contact_us', [ContactController::class, 'ContactUs'])->name('contact_us');
+    Route::get('/contact_add', [ContactController::class, 'ContactAdd'])->name('contact_add');
+    Route::post('/contact_us_save', [ContactController::class, 'ContactSave'])->name('contact_us_save');
+    Route::delete('/contact_delete/{id}', [ContactController::class, 'ContactDelete'])->name('contact_delete');
+});
+
 
 
 // ----------------------> Admin Dashboard Route And Controllers And Setting <-------------------------- // 
@@ -167,6 +215,7 @@ Route::middleware('auth')->group(function () {
 
     // classes Routes &controllers 
     Route::get('/classes', [ClassesController::class, 'index'])->name('classes')->middleware('permission:class_list');
+    Route::get('/class_detail/{id}', [ClassesController::class, 'ClassDetail'])->name('class_detail')->middleware('permission:class_list');
     Route::get('/class_add', [ClassesController::class, 'ClassAdd'])->name('class_add')->middleware('permission:class_add');
     Route::post('/class_save', [ClassesController::class, 'ClassSave'])->name('class_save')->middleware('permission:class_add');
     Route::get('/class_edit/{id}', [ClassesController::class, 'ClassEdit'])->name('class_edit')->middleware('permission:class_edit');
@@ -179,8 +228,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/assign_subject_to_class_list/{id}', [AssignSubjectToClass::class, 'AssignSubjectList'])->name('class_subject_list')->middleware('permission:subject_class_list');
     Route::get('/assign_subject_to_class/{id}', [AssignSubjectToClass::class, 'AssignSubject'])->name('assign_subject')->middleware('permission:assign_subject_class');
     Route::post('/assign_subject_to_class_save', [AssignSubjectToClass::class, 'SaveAssignSubject'])->name('save_assign')->middleware('permission:assign_subject_class');
-    Route::delete('/assign_subject_to_class_delete/{id}', [AssignSubjectToClass::class, 'DeleteAssignSubject'])->name('class_subject_delete')->middleware('permission:subject_class_delete');
-
+    Route::delete('/class_subject_delete/{class_id}/{subject_id}', [AssignSubjectToClass::class, 'DeleteAssignSubject'])->name('class_subject_delete')->middleware('permission:subject_class_delete');
 
     // Subjects Routes & controllers
     Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects')->middleware('permission:subject_list');
@@ -189,7 +237,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/subject_edit/{id}', [SubjectController::class, 'SubjectEdit'])->name('subject_edit')->middleware('permission:subject_edit');
     Route::put('/subject_update/{id}', [SubjectController::class, 'SubjectUpdate'])->name('subject_update')->middleware('permission:subject_edit');
     Route::delete('/subject_delete/{id}', [SubjectController::class, 'SubjectDelete'])->name('subject_delete')->middleware('permission:subject_delete');
+    Route::get('/subject_detail/{id}', [SubjectController::class, 'SubjectDetail'])->name('subject_detail')->middleware('permission:subject_list');
 
+
+    // assign teacher in subject routes & controllers
+    Route::get('/assign_teacher_to_subject/{id}', [SubjectController::class, 'AssignTeacher'])->name('assign_teacher')->middleware('permission:subject_list');
+    Route::post('/assign_teacher_to_subject_save', [SubjectController::class, 'SaveAssignTeacher'])->name('save_assign_teacher')->middleware('permission:subject_list');
+    Route::delete('/assign_teacher_to_subject_delete/{subject_id}/{teacher_id}', [SubjectController::class, 'DeleteAssignTeacher'])->name('subject_teacher_delete')->middleware('permission:subject_list');
 
     // Outcome Routes & Controllers
     Route::get('/outcome_list', [OutcomeController::class, 'OutcomeList'])->name('outcome_list')->middleware('permission:outcome_list');
@@ -243,9 +297,10 @@ Route::middleware('auth')->group(function () {
 
     // timetable routes & controllers
     Route::get('/timetable_list', [TimetableController::class, 'TimetableList'])->name('timetable_list')->middleware('permission:timetable_list');
-    Route::get('/timetable_add', [TimetableController::class, 'TimetableAdd'])->name('timetable_add')->middleware('permission:timtable_add');
+    Route::get('/timetable_add', [TimetableController::class, 'TimetableAdd'])->name('timetable_add')->middleware('permission:timetable_add');
     Route::get('/get-subjects/{class_id}', [TimetableController::class, 'getSubjects']);
-    Route::post('/timetable_save', [TimetableController::class, 'TimetableSave'])->name('timetable_save')->middleware('permission:timtable_add');
+    Route::get('/get-teachers/{subject_id}', [TimetableController::class, 'getTeachers']);
+    Route::post('/timetable_save', [TimetableController::class, 'TimetableSave'])->name('timetable_save')->middleware('permission:timetable_add');
     Route::get('/timetable_edit/{id}', [TimetableController::class, 'TimetableEdit'])->name('timetable_edit')->middleware('permission:timetable_edit');
     Route::put('/timetable_update/{id}', [TimetableController::class, 'TimetableUpdate'])->name('timetable_update')->middleware('permission:timetable_edit');
     Route::delete('/timetable_delete/{id}', [TimetableController::class, 'TimetableDelete'])->name('timetable_delete')->middleware('permission:timetable_delete');
@@ -295,14 +350,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/permission_roles_edit/{id}', [RolePermissionController::class, 'edit_permission_role'])->name('permission_roles_edit')->middleware('permission:edit_permissions_roles');
     Route::put('/permission_roles_update/{id}', [RolePermissionController::class, 'update_permission_role'])->name('update_permission_role')->middleware('permission:edit_permissions_roles');
     Route::get('/permission_roles_delete/{id}', [RolePermissionController::class, 'permission_roles_delete'])->name('permission_roles_delete')->middleware('permission:delete_permissions_roles');
-
-
-
-    // ----------------------> Website Route And Controllers And Setting <-------------------------- // 
-
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('website');
 });
 
 require __DIR__ . '/auth.php';
+
+
+// developer-hadi-askari

@@ -8,7 +8,7 @@
         </div>
 
         <!-- Filter -->
-        <form method="GET" action="{{ route('timetable_list') }}" class="row g-2 mb-3">
+        <form method="GET" action="#" class="row g-2 mb-3">
 
             <div class="col-md-8">
                 <select name="class_id" class="form-select">
@@ -30,7 +30,7 @@
                 </button>
 
                 <!-- Add score -->
-                @if (Auth::user()->can('timetable_add'))
+                @if (Auth::user()->can('timetable_list'))
                     <a href="{{ route('timetable_add') }}" class="btn btn-sm btn-primary"
                         style="padding-top: 0.65rem; padding-bottom: 0.6rem; font-weight: 600;">
                         <i class="fa fa-add"></i> add timetable
@@ -85,6 +85,10 @@
                                                 <small class="text-muted d-block mt-1"
                                                     style="color:#28612b; font-weight:600;">
                                                     {{ $item->teacher->FirstName }} - {{ $item->teacher->LastName }}
+                                                </small>
+                                                <small class="text-muted d-block mt-1 text-primary"
+                                                    style="color:#000000;font-weight:500;font-size:10px;line-height:1.2;white-space:nowrap;">
+                                                    {{ $item->start_time }} - {{ $item->end_time }}
                                                 </small>
                                                 <div class="actions mt-1 d-flex justify-content-center gap-1">
 

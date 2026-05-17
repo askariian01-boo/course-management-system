@@ -11,10 +11,11 @@ This is a Laravel-based Course Management System for managing students, teachers
 
 ## ⚙️ Features
 - User authentication (Admin / Teacher)
+- Attendance system (staff / Teacher / Student)
+- Salrary payment system (Staff / Teacher)
 - Course management
 - Student enrollment
 - Role & permission system
-- Attendance system
 
 ## 🛠 Tech Stack
 - Laravel

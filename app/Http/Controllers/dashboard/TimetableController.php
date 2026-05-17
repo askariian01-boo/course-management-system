@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Timetable;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TimetableController extends Controller
@@ -37,6 +38,27 @@ class TimetableController extends Controller
         $subjects = $class->subjects;
         return response()->json($subjects);
     }
+    // گرفتن استاد همان مضامین
+    public function getTeachers($subject_id)
+    {
+        try {
+            if (!$subject_id) {
+                return response()->json([]);
+            }
+
+            $subject = Subject::with('teachers')->find($subject_id);
+
+            if (!$subject) {
+                return response()->json([]);
+            }
+            return response()->json($subject->teachers);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 
     public function TimetableAdd()
@@ -55,6 +77,8 @@ class TimetableController extends Controller
             'class_id' => 'required|exists:classes,id',
             'subject_id' => 'required|exists:subjects,id',
             'teacher_id' => 'required|exists:teachers,id',
+            'start_time' => 'required',
+            'end_time' => 'required',
         ]);
 
         // جلوگیری از تداخل صنف
@@ -67,6 +91,7 @@ class TimetableController extends Controller
                 'message' => 'This class is already assigned to this time slot',
                 'alert-type' => 'error'
             ];
+
             return back()->with($notification);
         }
 
@@ -80,23 +105,26 @@ class TimetableController extends Controller
                 'message' => 'This teacher is already assigned to this time slot',
                 'alert-type' => 'error'
             ];
+
             return back()->with($notification);
         }
-
 
         Timetable::create([
             'weekday' => $request->weekday,
             'period' => $request->period,
             'class_id' => $request->class_id,
             'subject_id' => $request->subject_id,
-            'teacher_id' => $request->teacher_id
+            'teacher_id' => $request->teacher_id,
+            // برای این که ساعت باید ۱۲ ساعته باشد و با فرمت AM/PM نمایش داده شود، از Carbon استفاده می‌کنیم
+            'start_time' => Carbon::createFromFormat('H:i', $request->start_time)->format('h:i A'),
+            'end_time' => Carbon::createFromFormat('H:i', $request->end_time)->format('h:i A'),
         ]);
 
         $notification = [
             'message' => 'Timetable successfully created',
             'alert-type' => 'success'
         ];
-        // return redirect()->back();
+
         return redirect()->route('timetable_list')->with($notification);
     }
 
@@ -121,6 +149,8 @@ class TimetableController extends Controller
             'class_id' => 'required|exists:classes,id',
             'subject_id' => 'required|exists:subjects,id',
             'teacher_id' => 'required|exists:teachers,id',
+            'start_time' => 'required',
+            'end_time' => 'required',
         ]);
 
         $existsClass = Timetable::where('weekday', $request->weekday)
@@ -157,6 +187,8 @@ class TimetableController extends Controller
         $timetable->class_id = $request->class_id;
         $timetable->subject_id = $request->subject_id;
         $timetable->teacher_id = $request->teacher_id;
+        $timetable->start_time = Carbon::createFromFormat('H:i', $request->start_time)->format('h:i A');
+        $timetable->end_time = Carbon::createFromFormat('H:i', $request->end_time)->format('h:i A');
 
         $timetable->save();
 

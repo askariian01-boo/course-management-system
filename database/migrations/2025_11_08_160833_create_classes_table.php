@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('ClassName');
             $table->integer('ClassFees');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->integer('capacity')->nullable();
             $table->timestamps();
         });
 
@@ -25,17 +28,6 @@ return new class extends Migration
             $table->string('Author')->nullable();
             $table->timestamps();
         });
-
-
-        Schema::create('class_subject', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('class_id');
-            $table->unsignedBigInteger('subject_id');
-            $table->timestamps();
-
-            $table->foreign('class_id')->references('id')->on('classes')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('subject_id')->references('id')->on('subjects')->cascadeOnDelete()->cascadeOnUpdate();
-        });
     }
 
     /**
@@ -45,6 +37,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('classes');
         Schema::dropIfExists('subjects');
-        Schema::dropIfExists('class_subject');
     }
 };

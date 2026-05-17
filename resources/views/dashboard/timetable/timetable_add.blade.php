@@ -42,6 +42,28 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" style="font-weight:600;">start time</label>
+                            <div class="col-sm-9">
+                                <input type="time" class="form-control" name="start_time" placeholder="enter start time">
+                                @error('start_time')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" style="font-weight:600;">end time</label>
+                            <div class="col-sm-9">
+                                <input type="time" class="form-control" name="end_time" placeholder="enter end time">
+                                @error('end_time')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
                             <label class="col-sm-3 col-form-label" style="font-weight:600;">class</label>
                             <div class="col-sm-9">
                                 <select class="form-control form-select" name="class_id" id="class_select">
@@ -73,11 +95,11 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label" style="font-weight:600;">teachers</label>
                             <div class="col-sm-9">
-                                <select class="form-control form-select" name="teacher_id" id="subject_select">
+                                <select class="form-control form-select" name="teacher_id" id="teacher_select">
                                     <option>chosse teachers</option>
                                     @foreach ($teachers as $teacher)
                                         <option value="{{ $teacher->id }}">{{ $teacher->FirstName }} -
-                                            {{ $teacher->LastName }}</option>
+                                            {{ $teacher->LastName }} --- ( {{ $teacher->EducationDegree }} ) --- </option>
                                     @endforeach
                                 </select>
                                 @error('subject_id')
@@ -96,19 +118,26 @@
         <script>
             $(document).ready(function() {
 
+                // =========================
+                // 1. Load Subjects by Class
+                // =========================
                 $('#class_select').on('change', function() {
+
                     let class_id = $(this).val();
 
+                    $('#subject_select').html('<option value="">Loading...</option>');
+                    $('#teacher_select').html('<option value="">choose teacher</option>');
+
                     if (class_id) {
+
                         $.ajax({
-                            url: '/get-subjects/' + class_id,
-                            type: 'GET',
-                            dataType: 'json',
+                            url: "{{ url('/get-subjects') }}/" + class_id,
+                            type: "GET",
+                            dataType: "json",
 
                             success: function(data) {
 
-                                $('#subject_select').empty();
-                                $('#subject_select').append(
+                                $('#subject_select').html(
                                     '<option value="">choose subject</option>');
 
                                 $.each(data, function(key, value) {
@@ -117,16 +146,60 @@
                                         .SubjectName + '</option>'
                                     );
                                 });
+
                             },
 
-                            error: function() {
-                                alert('');
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                                alert('Error loading subjects');
                             }
                         });
 
                     } else {
-                        $('#subject_select').empty();
-                        $('#subject_select').append('<option value="">choose subject</option>');
+                        $('#subject_select').html('<option value="">choose subject</option>');
+                    }
+                });
+
+
+                // =========================
+                // 2. Load Teachers by Subject
+                // =========================
+                $('#subject_select').on('change', function() {
+
+                    let subject_id = $(this).val();
+
+                    $('#teacher_select').html('<option value="">Loading...</option>');
+
+                    if (subject_id) {
+
+                        $.ajax({
+                            url: "{{ url('/get-teachers') }}/" + subject_id,
+                            type: "GET",
+                            dataType: "json",
+
+                            success: function(data) {
+
+                                $('#teacher_select').html(
+                                    '<option value="">choose teacher</option>');
+
+                                $.each(data, function(key, value) {
+                                    $('#teacher_select').append(
+                                        '<option value="' + value.id + '">' +
+                                        value.FirstName + ' ' + value.LastName + ' --- ( ' + value.EducationDegree + ' ) --- ' +
+                                        '</option>'
+                                    );
+                                });
+
+                            },
+
+                            error: function(xhr) {
+                                console.log(xhr.responseText);
+                                alert('Error loading teachers');
+                            }
+                        });
+
+                    } else {
+                        $('#teacher_select').html('<option value="">choose teacher</option>');
                     }
                 });
 

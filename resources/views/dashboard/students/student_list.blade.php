@@ -4,10 +4,10 @@
         <div class="card-style">
             <h4 class="mb-10">Students List
                 @if (Auth::user()->can('student_add'))
-                <a href="{{ route('student_add') }}" class="btn btn-primary fw-bold float-right btn-sm"><i
-                        class="fa fa-plus"></i>add student</a>
-            @endif
-        </h4><br>
+                    <a href="{{ route('student_add') }}" class="btn btn-primary fw-bold float-right btn-sm"><i
+                            class="fa fa-plus"></i>add student</a>
+                @endif
+            </h4><br>
             <div class="table-wrapper table-striped table-bordered table-responsive">
                 <table class="table table-striped table-hover table-bordered tableD" id="myTable">
                     <thead class="thead-light thead-light">

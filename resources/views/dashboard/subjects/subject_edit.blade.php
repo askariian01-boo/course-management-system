@@ -9,7 +9,7 @@
                 <div class="row">
                      <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" style="font-weight:600;">SubjectName</label>
+                          <label class="col-sm-3 col-form-label" style="font-weight:600;">SubName</label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" pattern="^[A-Za-z _-]+$" title="Only English letters, spaces, hyphens (-), and underscore (_) are allowed!" value="{{$subject->SubjectName}}" required name="SubjectName">
                              @error('ClassName')
@@ -20,7 +20,7 @@
                       </div>
                      <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label" style="font-weight:600;">Class Name</label>
+                          <label class="col-sm-3 col-form-label" style="font-weight:600;">Author</label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" pattern="^[A-Za-z _-]+$" title="Only English letters, spaces, hyphens (-), and underscore (_) are allowed!" value="{{$subject->Author}}" name="Author">
                              @error('Author')

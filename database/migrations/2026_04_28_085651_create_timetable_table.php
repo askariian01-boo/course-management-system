@@ -18,10 +18,12 @@ return new class extends Migration
             $table->unsignedBigInteger('teacher_id');
             $table->unsignedBigInteger('class_id');
             $table->unsignedBigInteger('subject_id');
+            $table->string('start_time');
+            $table->string('end_time');
 
             // جلوگیری از تداخل استاد و صنف
-            $table->unique(['weekday', 'period', 'class_id']);
-            $table->unique(['weekday', 'period', 'teacher_id']);
+            $table->unique(['weekday', 'start_time', 'end_time', 'class_id']);
+            $table->unique(['weekday', 'start_time', 'end_time', 'teacher_id']);
 
             // foreign keys
             $table->foreign('teacher_id')->references('id')->on('teachers')->cascadeOnDelete()->cascadeOnUpdate();

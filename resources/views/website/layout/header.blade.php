@@ -53,12 +53,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="#" class="nav-item nav-link">Home</a>
-                <a href="#" class="nav-item nav-link">About</a>
-                <a href="#" class="nav-item nav-link">Courses</a>
-                <a href="#" class="nav-item nav-link">Our Team</a>
-                <a href="#" class="nav-item nav-link">Testimonial</a>
-                <a href="#" class="nav-item nav-link">Contact</a>
+                <a href="{{ route('website') }}" class="nav-item nav-link">Home</a>
+                <a href="{{ route('about_page') }}" class="nav-item nav-link">About</a>
+                <a href="{{ route('courses_page') }}" class="nav-item nav-link">Courses</a>
+                <a href="{{ route('tistimonials_page') }}" class="nav-item nav-link">Testimonial</a>
+                <a href="{{ route('contact_page') }}" class="nav-item nav-link">Contact</a>
                 {{-- اگر login نشده باشد --}}
                 @guest
                     <a href="{{ route('login') }}" class="nav-item nav-link active fw-bold">
@@ -75,3 +74,28 @@
             </div>
         </div>
     </nav>
+    <div class="container-fluid p-0 mb-5" style="margin-top: -15px;">
+        <div class="owl-carousel header-carousel position-relative">
+            <div class="owl-carousel-item position-relative">
+                <img class="img-fluid" src="{{ asset('website/img/course-2.jpg') }}" alt="">
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
+                    style="background: rgba(24, 29, 56, .7);">
+                    <div class="container">
+                        <div class="row justify-content-start">
+                            <div class="col-sm-10 col-lg-8">
+                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Courses
+                                    <br>
+                                </h5>
+                                <h1 class="display-3 text-white animated slideInDown">The Best Learning Platform
+                                </h1>
+                                <br>
+                                <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed
+                                    stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus
+                                    eirmod elitr.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

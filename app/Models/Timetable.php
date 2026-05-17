@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Timetable extends Model
 {
-    protected $fillable = ['weekday','period','class_id','subject_id','teacher_id'];
+    protected $fillable = ['weekday','period','class_id','subject_id','teacher_id','start_time','end_time'];
     protected $table = 'timetable';
 
     public function Teacher(){

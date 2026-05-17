@@ -66,42 +66,42 @@
             <table class="table table-bordered text-center table-striped table-hover align-middle tableD" id="myTable">
                 <thead class="table-light thead-light">
                     <tr>
-                        <th class="text-center">id</th>
-                        <th class="text-center">students</th>
-                        <th class="text-center">subjects</th>
-                        <th class="text-center">first_chance</th>
-                        <th class="text-center">second_chance</th>
-                        <th class="text-center">result</th>
+                        <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">id</th>
+                        <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">students</th>
+                        <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">subjects</th>
+                        <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">first_chance</th>
+                        <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">second_chance</th>
+                        <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">result</th>
                         @if (Auth::user()->can('score_edit'))
-                            <th class="text-center">edit</th>
+                            <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">edit</th>
                         @endif
                         @if (Auth::user()->can('score_delete'))
-                            <th class="text-center">delete</th>
+                            <th style="padding:16px; font-weight:500; font-size:16px;" class="text-center">delete</th>
                         @endif
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($scores as $score)
                         <tr>
-                            <td class="text-center">
+                            <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
                                 <p>
                                     {{ $score->id }}
 
                                 </p>
                             </td>
-                            <td class="text-center">
-                                <p>{{ $score->student->FirstName }}-{{ $score->student->LastName }}</p>
+                            <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
+                                <p>{{ $score->student->FirstName }} - {{ $score->student->LastName }}</p>
                             </td>
-                            <td class="text-center">
+                            <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
                                 <p>{{ $score->subject->SubjectName }}</p>
                             </td>
-                            <td class="text-center">
+                            <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
                                 <p>{{ $score->first_chance }}</p>
                             </td>
-                            <td class="text-center">
+                            <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
                                 <p>{{ $score->second_chance }}</p>
                             </td>
-                            <td class="text-center">
+                            <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
                                 @if (!is_null($score->second_chance))
                                     @if ($score->second_chance >= 60)
                                         <span class="text-success fw-bold">success</span>
@@ -117,12 +117,13 @@
                                 @endif
                             </td>
                             @if (Auth::user()->can('score_edit'))
-                                <td class="text-center">
-                                    <a href="{{ route('score_edit', $score->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
+                                    <a href="{{ route('score_edit', $score->id) }}" class="btn btn-sm btn-primary"><i
+                                            class="fa fa-edit"></i></a>
                                 </td>
                             @endif
                             @if (Auth::user()->can('score_delete'))
-                                <td class="text-center">
+                                <td style="padding:10px;  font-weight:500; font-size:12px;" class="text-center">
                                     <p>
                                     <form action="{{ route('score_delete', $score->id) }}" method="POST" class="d-inline">
                                         @csrf
